@@ -7,7 +7,9 @@ If using OpenAI, set OPENAI_API_KEY in environment or in a .env file
 
 ## Running
 
+```
 poetry run python toolsense/toolsense.py --base-url https://api.openai.com/v1/ --model gpt-3.5-turbo-1106 --max-steps 5 'what was the weather here 3 days ago?'
+```
 
 This is a tool dependency graph test: it should ask for current date/time and current location and then ask for the weather give the date and location. It sometimes works with gpt35 and seems to always work with gpt4.
 
