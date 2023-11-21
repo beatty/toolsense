@@ -7,6 +7,7 @@ import json
 import os
 import sys
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -95,6 +96,18 @@ _FUNCTIONS = [get_current_date_time, get_weather, get_current_location]
 
 
 def main(*, model: str, base_url: str, prompt: str, max_steps: int = 5):
+    parsed_url = urlparse(base_url)
+    fqdn = parsed_url.netloc
+    if fqdn == "api.openai.com":
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            logging.error(
+                "OPENAI_API_KEY environment variable must be set (or in .env file) when using the OpenAI API"
+            )
+            sys.exit(1)
+    else:
+        api_key = None
+
     functions = {f.__name__: f for f in _FUNCTIONS}
     tools = [{"type": "function", "function": t} for t in _TOOLS]
 
